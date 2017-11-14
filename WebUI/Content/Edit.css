@@ -1,0 +1,13 @@
+﻿.wrapper {
+    width: auto;
+    height: 500px;
+}
+
+.avatar, .account-data, .change-password {
+    float: left;
+    width: 33.3%;
+    height: 450px;
+    text-align: center;
+}
+
+

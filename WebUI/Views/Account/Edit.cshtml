@@ -1,0 +1,116 @@
+﻿@model WebUI.Models.EditViewModel
+
+
+<h4 align="left">Настройки аккаунта</h4>
+<div style="float:right">
+@Html.ActionLink("Выйти", "Logout", "Account", new { @class = "btn btn-primary" })
+</div>
+<br />
+
+<script src="~/Scripts/readUrl.js"></script>
+
+<div class="wrapper">
+
+    @using (Html.BeginForm("Edit", "Account", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+
+    <div class="avatar">
+        <img id="blah" src="/Account/Image" alt="your avatar" width="200" height="200"><br />
+        
+        <input type="file" id="imagefile" name="upload" onchange="readURL(this);" class="inputfile"  />
+        <br />
+        <label for="imagefile" class="btn change-photo">Сменить фото</label>
+        <br />
+        
+                 
+    </div>
+   
+        <h2 align="left">@(Html.DisplayFor(x => x.FirstName) + " " + Html.DisplayFor(x => x.LastName))</h2>
+        <br />
+      
+            <div class="account-data">
+                <p align="left">
+                    @Html.LabelFor(model => model.FirstName)
+                    <br />
+                    @Html.EditorFor(model => model.FirstName, new { @class = "form-control" })
+                    <br />
+                    @Html.ValidationMessageFor(model => model.FirstName)
+                </p>
+
+                <p align="left">
+                    @Html.LabelFor(model => model.LastName)
+                    <br />
+                    @Html.EditorFor(model => model.LastName, new { @class = "form-control" })
+                    <br />
+                    @Html.ValidationMessageFor(model => model.LastName)
+                </p>
+
+                <p align="left">
+                    @Html.LabelFor(model => model.Email)
+                    <br />
+                    @Html.EditorFor(model => model.Email, new { @class = "form-control" })
+                    <br />
+                    @Html.ValidationMessageFor(model => model.Email)
+                </p>
+
+                <p align="left">
+                    @Html.LabelFor(model => model.Status)
+                    <br />
+                    @Html.DropDownList("Status", new SelectList(new string[] { "В сети", "Не в сети" }), "Выберите статус", htmlAttributes: new { @class = "form-control" })
+                    <br />
+                    @Html.ValidationMessageFor(model => model.Status)
+                </p>
+
+                <p align="left">
+                    @Html.LabelFor(model => model.Sex)
+                    <br />
+                    @Html.RadioButton("Sex", "Мужской") Мужской
+                    <br />
+                    @Html.RadioButton("Sex", "Женский", true) Женский
+                    <br />
+                    @Html.ValidationMessageFor(model => model.Sex)
+                </p>
+
+                <p  align="left">
+                    <input type="submit" value="Сохранить изменения" class="btn btn-primary" />
+                </p>
+            </div>
+     }
+        @using (Html.BeginForm("ChangePassword", "Account"))
+        {
+            @Html.AntiForgeryToken()
+
+           
+            if (TempData["Change"] as string == "Succedeed")
+            {
+                <p style="color:red">Пароль был успешно изменен</p>
+            }
+            if (TempData["Change"] as string == "False")
+            {
+                <p style="color:red">Сменить пароль не удалось. Попробуйте еще раз</p>
+            }
+            <div class="change-password">
+                <p align="left">
+                    @Html.LabelFor(model => model.NewPassword)
+                    <br />
+                    @Html.EditorFor(model => model.NewPassword, new { @class = "form-control" })
+                    <br />
+                    @Html.ValidationMessageFor(model => model.NewPassword)
+                </p>
+
+                <p align="left">
+                    @Html.LabelFor(model => model.OldPassword)
+                    <br />
+                    @Html.EditorFor(model => model.OldPassword, new { @class = "form-control" })
+                    <br />
+                    @Html.ValidationMessageFor(model => model.OldPassword)
+                </p>
+                <p align="left">
+                    <input type="submit" value="Сохранить изменения" class="btn btn-primary"/>
+                </p>
+            </div>
+
+        }
+    
+</div>
