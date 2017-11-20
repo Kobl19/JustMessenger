@@ -1,7 +1,38 @@
-﻿
+﻿@model WebUI.Models.IndexViewModel
+
+    @Html.ActionLink("Выйти", "Logout", "Account")
+    @Html.ActionLink("Мой Аккаунт", "Edit", "Account")
+    @ViewBag.Message
 
 
-<h1>IN DEVELOPMENT</h1>
-@Html.ActionLink("Выйти", "Logout", "Account")
-@Html.ActionLink("Мой Аккаунт", "Edit", "Account")
-@ViewBag.Message
+
+
+@section scripts
+{
+
+    <script type="text/javascript" src="~/Scripts/jquery.signalR-2.2.2.js"></script>
+    <script type="text/javascript" src="~/signalr/hubs"></script>
+    <script type="text/javascript">
+    $(function () {
+        var chatHub = $.connection.chatHub;
+
+        chatHub.client.SendMessage = function (name, message) {
+            $("#discussion").append("<li><strong>" + name + "</strong>" + " " + message + "</li>")
+        };
+        $.connection.hub.start().done(function () {
+
+            $("#sendMessage").on("click", function () {
+                var name = @Html.Raw(Json.Encode(ViewBag.Name));
+                var message = $("#message").val();
+                chatHub.server.send(name, message);
+                $("#message").val("").focus();
+            });
+        });
+    });
+    </script>
+}
+
+<input type="text" id="message" />
+<input type="button" id="sendMessage" value="Send" />
+<input type="hidden" id="displayName" />
+<ul id="discussion"></ul>

@@ -180,7 +180,10 @@ namespace WebUI.Controllers
             IEnumerable<UserDTO> usersDtos = UserService.usersDTO();
             var user = usersDtos.Where(x => x.Id == Id).FirstOrDefault();
             if (user == null) throw new HttpException(404, "Not Found");
-
+            if (user.InternalUrl==null)
+            {
+                return File("~/Uploads/default.jpg", Server.MapPath("~/Uploads/default.jpg"));
+            }
             return File(user.InternalUrl, Server.MapPath($"~/Uploads/{Id}.jpg"));
         }
         [HttpPost]

@@ -1,4 +1,6 @@
-﻿using BusinessLogic.Interfaces;
+﻿using AutoMapper;
+using BusinessLogic.DTO;
+using BusinessLogic.Interfaces;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
@@ -7,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using WebUI.Models;
 
 namespace WebUI.Controllers
 {
@@ -33,6 +36,10 @@ namespace WebUI.Controllers
         {
             var id = User.Identity.GetUserId();
             ViewBag.Message = "Ваш id: " + id.ToString();
+            IEnumerable<UserDTO> userDto=UserService.usersDTO();
+            string Name = userDto.FirstOrDefault(x=>x.Id==id).FirstName;
+            ViewBag.Name = Name;
+            
             return View();
         }
     }
